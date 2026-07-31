@@ -1,3 +1,4 @@
+import html
 import os 
 import requests
 import psycopg2
@@ -19,8 +20,8 @@ for job in jobs:
     if not job_id:
         continue
     slug=job.get("slug")
-    position=job.get("position")
-    company=job.get("company")
+    position=html.unescape(job.get("position")or "")
+    company=html.unescape(job.get("company") or "")
     tags=", ".join(job.get("tags",[]))
     apply_url=job.get("apply_url")
     salary_min=job.get("salary_min") or None
