@@ -26,3 +26,10 @@ where length(trim(word)) >3
 group by trim(lower(word)) 
 order by word_count desc limit 15;""", conn)
 st.bar_chart(top_words.set_index("word"))
+
+st.subheader("New Job Postings by Day of Week")
+day_trend=pd.read_sql("""
+select to_char(first_seen,'Day') as day_of_week, count(*) as new_jobs
+from jobs group by to_char(first_seen,'Day'), extract(DOW from first_seen)
+order by extract(DOW from first_seen);""",conn)
+st.bar_chart(day_trend.set_index("day_of_week"))
